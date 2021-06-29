@@ -26,7 +26,7 @@
                             <div class="row mt-2">
                                 @if (Model.Id != 0)
                                 {
-                                    <input type="hidden" asp-for="Name" value="Model.Id" class="form-control">
+                                    <input type="hidden" asp-for="Name" value="@Model.Id" class="form-control">
                                     <partial name="_EditAndBackToListButton" model="Model.Id" /> }
                                 else
                                 {
@@ -54,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                        
                         @foreach (var item in (IEnumerable<Category>)TempData["categoryList"])
                         {
                         <tr>

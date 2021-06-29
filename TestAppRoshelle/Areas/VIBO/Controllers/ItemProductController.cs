@@ -29,6 +29,7 @@ namespace TestAppRoshelle.Areas.VIBO.Controllers
 
         public async Task<IActionResult> UpsertItemProduct(int? id)
         {
+            TempData["itemList"] =  _unitOfWork.ItemProduct.GetAll();
             ItemProductVM itemProductVM = new ItemProductVM()
             {
                 ItemProduct = new ItemProduct(),
@@ -43,31 +44,42 @@ namespace TestAppRoshelle.Areas.VIBO.Controllers
             {
                 return View(itemProductVM);
             }
-            //itemProductVM.ItemProduct =  _unitOfWork.ItemProduct.GetAll(x=>x.Id==id);
+            itemProductVM.ItemProduct =  _unitOfWork.ItemProduct.GetFirstOrDefault(x=>x.Id==id);
             return View(itemProductVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> UpsertItemProduct(ItemProductVM itemProductVM)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    if (itemProductVM.ItemProduct.Id == 0)
-            //    {
-            //        await _unitOfWork.ItemProduct.AddAsync(itemProductVM.ItemProduct);
+            if (ModelState.IsValid)
+            {
+                if (itemProductVM.ItemProduct.Id == 0)
+                {
+                     _unitOfWork.ItemProduct.Add(itemProductVM.ItemProduct);
 
-            //    }
-            //    else
-            //    {
-            //        _unitOfWork.Supplier.Update(suppliervm.Supplier);
-            //    }
-            //    _unitOfWork.Save();
-            //    return RedirectToAction("UpsertSupplier", "Supplier", new { area = "BZUS", id = 0 });
-            //}
+                }
+                else
+                {
+                    _unitOfWork.ItemProduct.Update(itemProductVM.ItemProduct);
+                }
+                _unitOfWork.Save();
+                return RedirectToAction("UpsertItemProduct", "ItemProduct", new { area = "VIBO", id = 0 });
+            }
             return View(itemProductVM);
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            ItemProduct itemProduct =  _unitOfWork.ItemProduct.Get(id);
+            if (itemProduct != null)
+            {
+                itemProduct.IsActive = "N";
+                _unitOfWork.ItemProduct.Update(itemProduct);
+                _unitOfWork.Save();
+            }
 
+            return RedirectToAction("UpsertItemProduct", "ItemProduct", new { area = "VIBO", id = 0 });
+        }
 
 
         public IActionResult Privacy()
