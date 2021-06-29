@@ -99,6 +99,7 @@
                     <div class="row mt-2">
                         @if (Model.Supplier.Id != 0)
                         {
+                            <input type="hidden" asp-for="Supplier.Id"  value="Model.Supplier.Id" class="form-control">
                             <partial name="_EditAndBackToListButton" model="Model.Supplier.Id" /> }
                         else
                         {
@@ -135,27 +136,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        
                             @foreach (var item in (IEnumerable<Supplier>)TempData["supplierList"])
-                            {
-                                <th>@item.Name</th>
-                                <th>@item.Category.Name</th>
-                                <th>@item.Address</th>
-                                <th>@item.City</th>
-                                <th>@item.Country</th>
-                                <th>@item.Email</th>
-                                <th>@item.TelephoneNumber</th>
-                                <th>@item.Fax</th>
-                                <th>@item.ForwarderName</th>
-                                <th>@item.PortOfDischarge</th>
-                                <th>@item.ImportId</th>
-                                <th>
-                                    <a class="btn btn-success" asp-area="VIBO" asp-controller="Supplier" asp-action="UpsertSupplier" asp-route-id="@item.Id">Update</a>
-                                    <a class="btn btn-success" asp-area="VIBO" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                </th>
-                            }
+                            {<tr>
+                            <th>@item.Name</th>
+                            <th>@item.Category.Name</th>
+                            <th>@item.Address</th>
+                            <th>@item.City</th>
+                            <th>@item.Country</th>
+                            <th>@item.Email</th>
+                            <th>@item.TelephoneNumber</th>
+                            <th>@item.Fax</th>
+                            <th>@item.ForwarderName</th>
+                            <th>@item.PortOfDischarge</th>
+                            <th>@item.ImportId</th>
+                            <th>
+                                <a class="btn btn-success" asp-area="VIBO" asp-controller="Supplier" asp-action="UpsertSupplier" asp-route-id="@item.Id">Update</a>
+                                <a class="btn btn-success" asp-area="VIBO" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </th>
+</tr>
+    }
 
-                        </tr>
+
                     </tbody>
 
                 </table>
